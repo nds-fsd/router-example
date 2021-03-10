@@ -14,3 +14,8 @@
     border: 1px solid;
     
 }
+
+.taskSelected {
+    background-color: yellow;
+    border: 5px solid;
+}

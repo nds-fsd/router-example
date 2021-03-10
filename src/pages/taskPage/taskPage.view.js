@@ -1,6 +1,6 @@
 import styles from './taskPage.module.css';
 import React, { useState } from 'react';
-import { Link, Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import TaskDetailPage from '../taskDetailPage/taskDetailPage.view';
 
 const tasks = [
@@ -20,11 +20,12 @@ const tasks = [
     id: '4',
     name: 'Task 4',
   },
-]
+];
 
 const TaskPage = () => {
   let match = useRouteMatch();
-  console.log(match);
+  let location = useLocation();
+
   debugger;
   
   
@@ -33,20 +34,22 @@ const TaskPage = () => {
      <h1>TASKS</h1>
 
      
-    {tasks.map(task => (
-      <Link to={`${match.url}/inside/${task.id}`}>
-        <div className={styles.taskCard}>
-          <p>{task.name}</p>
-        </div>
-      </Link>
-    ))}
+    {tasks.map(task => {
+      return (
+        <Link to={`${match.url}/${task.id}`}>
+          <div className={`${styles.taskCard} ${location.pathname.endsWith(task.id) && styles.taskSelected} `}>
+            <p>{task.name}</p>
+          </div>
+        </Link>
+      );
+    })}
     <Link to={`${match.url}`}>
         <div className={styles.taskCard}>
           <p>All</p>
         </div>
       </Link>
     <Switch>
-      <Route path={`${match.path}/inside/:taskId`}>
+      <Route path={`${match.url}/:taskId`}>
         <TaskDetailPage />
       </Route>
     </Switch>
