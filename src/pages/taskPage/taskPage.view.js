@@ -1,7 +1,8 @@
 import styles from './taskPage.module.css';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import TaskDetailPage from '../taskDetailPage/taskDetailPage.view';
+import { CounterContext } from '../../context/counterContext';
 
 const tasks = [
   {
@@ -26,13 +27,12 @@ const TaskPage = () => {
   let match = useRouteMatch();
   let location = useLocation();
 
-  debugger;
   
   
   return (
     <div className={styles.container}>
-     <h1>TASKS</h1>
 
+     <h1>TASKS</h1>
      
     {tasks.map(task => {
       return (

@@ -9,8 +9,9 @@ import {
 } from "react-router-dom";
 import TaskPage from './pages/taskPage/taskPage.view';
 import Home from './pages/home/home.view';
-import { HOME, TASK_PAGE, TASK_PAGE_LIST, USER_PAGE } from './routers/routers';
+import { HOME, TASK_PAGE, TASK_PAGE_LIST, USER_PAGE, COUNTER } from './routers/routers';
 import TaskDetailPage from './pages/taskDetailPage/taskDetailPage.view';
+import CounterPage from './pages/counterPage/counterPage.view';
 
 function App() {
 
@@ -30,9 +31,12 @@ function App() {
             <li>
               <Link to={TASK_PAGE_LIST}>Task</Link>
             </li>
+            <li>
+              <Link to={COUNTER}>setCounter</Link>
+            </li>
           </ul>
         </nav>
-
+        
         <Switch>
           <Route path={USER_PAGE}>
             <UserPage />
@@ -42,6 +46,9 @@ function App() {
           </Route>
           <Route path={`${TASK_PAGE}/:taskId`} exact>
             <TaskDetailPage />
+          </Route>
+          <Route path={COUNTER} exact>
+            <CounterPage />
           </Route>
           <Route path={HOME} exact>
             <Home />
