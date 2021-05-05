@@ -3,31 +3,18 @@ import React, { useContext, useState } from 'react';
 import { Link, Route, Switch, useLocation, useRouteMatch } from 'react-router-dom';
 import TaskDetailPage from '../taskDetailPage/taskDetailPage.view';
 import { CounterContext } from '../../context/counterContext';
+import { useCategories } from '../../hooks/useCategories';
 
-const tasks = [
-  {
-    id: '1',
-    name: 'Task 1',
-  },
-  {
-    id: '2',
-    name: 'Task 2',
-  },
-  {
-    id: '3',
-    name: 'Task 3',
-  },
-  {
-    id: '4',
-    name: 'Task 4',
-  },
-];
 
 const TaskPage = () => {
   let match = useRouteMatch();
   let location = useLocation();
 
-  
+  const { categories, error, loaded } = useCategories();
+
+  if (!loaded) {
+    return <Loading />
+  }
   
   return (
     <div className={styles.container}>

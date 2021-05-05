@@ -1,13 +1,15 @@
 import styles from './userPage.module.css';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { removeSession, setUserSession } from '../../utils/auth';
+import { AuthContext } from '../../context/authContext';
 
 const UserPage = () => {
   const [userCreated, setUserCreated] = useState();
+  const {saveUser, saveToken, token, isLoged} = useContext(AuthContext);
   
 
-
   const createUser = () => {
-    const url = 'http://localhost:3001/user';
+    const url = 'http://localhost:3001/register';
     const body = {
       email: 'holaaaaa@nuclio.com',
       password: '123456789',
@@ -19,6 +21,7 @@ const UserPage = () => {
       headers: new Headers({
         Accept: 'application/json',
         'Content-type': 'application/json',
+		    "authorization": `Bearer ${token}`
       }),
       mode: 'cors',
       body: JSON.stringify(body),
@@ -26,20 +29,22 @@ const UserPage = () => {
 
     fetch(url, options)
     .then(response => {
-      console.log('Primer then');
       console.log(response);
       if (response.status === 200) {
         return response.json();
       }
+      if (response.status === 409) {
+        removeSession();
+      }
       return Promise.reject();
     })
     .then(response => {
-      console.log('Segundo then');
-      console.log(response);
-      setUserCreated(response);
-      debugger;
+      setUserSession(response);
+      saveToken(response.token);
+      saveUser(response.user);
     })
     .catch(err => {
+
       console.error(err);
     });
   }
@@ -49,7 +54,7 @@ const UserPage = () => {
   return (
     <div className={styles.container}>
       <h1>User</h1>
-     <button onClick={createUser} >Create user</button>
+     {!isLoged && <button onClick={createUser} >Login</button>}
 
      {
        userCreated && (
